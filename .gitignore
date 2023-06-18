@@ -1,3 +1,5 @@
 /.buildozer
 /bin
+bin
 buildozer.spec
+fitness.db

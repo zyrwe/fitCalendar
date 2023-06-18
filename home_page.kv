@@ -1,0 +1,392 @@
+#:import PlanCard main.PlanCard
+#:import ExerciseCard main.ExerciseCard
+#:import NewPlanScreen main.NewPlanScreen
+
+<HomePage>:
+    orientation: 'vertical'
+    md_bg_color: app.background_light
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+### Header ###
+        MDBoxLayout:
+            adaptive_height: True
+            size_hint_y: 0.1
+
+            MDLabel:
+                text: 'FitCalendar'
+                md_bg_color: app.background_dark
+                halign: 'center'
+                valign: 'top'
+                font_size: 20
+                height: self.texture_size[1]
+
+        MDBoxLayout:
+            md_bg_color: app.background_light
+
+            ScrollView:
+                bar_width: 0
+
+                MDBoxLayout:
+                    adaptive_height: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        id: timeline
+
+### Main menu bottom icons ###
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+
+            MDRectangleFlatIconButton:
+                icon: 'calendar'
+                text: 'Calendar'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                size_hint_x: 0.5
+                pos_hint: {'right': 1}
+                on_release: app.switch_screen('calendar_screen')
+
+            MDRectangleFlatIconButton:
+                icon: 'plus'
+                text: 'Add routine'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                size_hint_x: 0.5
+                pos_hint: {'left': 0}
+                on_release: app.switch_screen('new_plan_screen')
+
+### Exercise cards ###
+<PlanCard>
+    orientation: 'vertical'
+    size_hint_y: None
+    spacing: 10
+    md_bg_color: app.background_light
+
+    MDCard:
+        orientation: "vertical"
+        padding: "4dp"
+        size_hint: None, None
+        size: "280dp", "80dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        OneLineListItem:
+            id: title_item
+            text: f"[b][size=14]{root.title}[/size][/b]"
+
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+            spacing: 10
+
+            #Card buttons
+
+            MDRaisedButton:
+                text: "Edit"
+                md_bg_color: app.background_dark
+                size_hint_x: 0.5
+                pos_hint: {'right': 1}
+                line_color: (0, 0, 0, 0)
+
+            MDRaisedButton:
+                text: "Start"
+                md_bg_color: app.button_green
+                size_hint_x: 0.5
+                pos_hint: {'left': 0}
+                line_color: (0, 0, 0, 0)
+                on_release: root.start_plan()
+
+
+### CALENDAR SCREEN ###
+<CalendarScreen>:
+    days_layout: days_layout
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: app.background_light
+
+        MDBoxLayout:
+            adaptive_height: True
+            size_hint_y: 0.1
+
+            MDLabel:
+                text: 'Calendar'
+                halign: 'center'
+                valign: 'top'
+                md_bg_color: app.background_dark
+                font_size: 20
+                height: self.texture_size[1]
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '40dp'
+
+            # Calendar handlers
+
+            MDRectangleFlatIconButton:
+                text: '<'
+                md_bg_color: app.background_light
+                text_color: app.text_white
+                line_color: (0, 0, 0, 0)
+                on_release: root.previous_month()
+
+            MDLabel:
+                text: f'{root.current_year}-{root.current_month:02}'
+                halign: "center"
+                md_bg_color: app.background_light
+                text_color: 1, 1, 1, 1
+                font_size: '20sp'
+
+            MDRectangleFlatIconButton:
+                text: '>'
+                md_bg_color: app.background_light
+                text_color: app.text_white
+                line_color: (0, 0, 0, 0)
+                on_release: root.next_month()
+
+        MDGridLayout:
+            id: days_layout
+            spacing: '10dp'
+            padding: '5dp'
+            valign: 'center'
+            halign: 'center'
+            cols: 4
+
+
+### CALENDAR BOTTOM ICONS ###
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+            spacing: 10
+
+            MDRectangleFlatIconButton:
+                icon: 'home'
+                size_hint_x: 1
+                text: 'Back'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                adaptive_size: True
+                on_release: app.switch_screen('home_page')
+
+### ADD PLAN SCREEN ###
+
+<NewPlanScreen>:
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: app.background_light
+
+        MDBoxLayout:
+            adaptive_height: True
+            size_hint_y: 0.1
+
+            MDLabel:
+                text: 'Add plan'
+                halign: 'center'
+                valign: 'top'
+                md_bg_color: app.background_dark
+                font_size: 20
+                height: self.texture_size[1]
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.1
+            height: '40dp'
+            pos_hint: {"top": 1}
+            pos_hint: {"left": .1}
+            adaptive_height: True
+
+            # ADD TITLE
+            MDTextField:
+                id: plan_title
+                hint_text: "Plan tittle"
+                helper_text_mode: "persistent"
+                md_bg_color: app.background_light
+                spacing: '10dp'
+                text_color: 1, 1, 1, 1
+                font_size: '20sp'
+
+            MDRectangleFlatIconButton:
+                text: 'Save'
+                md_bg_color: app.background_light
+                text_color: app.text_white
+                line_color: (0, 0, 0, 0)
+                on_release: root.add_plan_title()
+
+        MDBoxLayout:
+            ScrollView:
+                bar_width: 0
+
+                MDBoxLayout:
+                    adaptive_height: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        id: exercises
+
+### NEW PLAN BOTTOM ICONS ###
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+            spacing: 10
+
+            MDRectangleFlatIconButton:
+                icon: 'home'
+                size_hint_x: 1
+                text: 'Back'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                adaptive_size: True
+                on_release: app.switch_screen('home_page')
+
+### EXERCISE CARDS ###
+
+<ExerciseCard>
+    orientation: 'vertical'
+    size_hint_y: None
+    spacing: 10
+
+    MDCard:
+        orientation: "vertical"
+        padding: "4dp"
+        size_hint: None, None
+        size: "280dp", "80dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        TwoLineListItem:
+            text: f"[b][size=14]{root.name}[/size][/b]"
+
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+            spacing: 10
+
+            #CARDS BUTTONS
+
+            MDRaisedButton:
+                id: add_exc
+                text: "Add"
+                size_hint_x: 0.5
+                pos_hint: {'left': 0}
+                line_color: (0, 0, 0, 0)
+                on_release: root.add_exercise_to_plan(root.name)
+
+
+
+### PAGE FOR STARTED WORKOUT ###
+
+<StartedPage>:
+    orientation: 'vertical'
+    md_bg_color: app.background_light
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+### Header ###
+        MDBoxLayout:
+            adaptive_height: True
+            size_hint_y: 0.1
+
+            MDLabel:
+                text: "0"
+                halign: 'center'
+                valign: 'top'
+                font_size: 20
+                height: self.texture_size[1]
+
+        MDBoxLayout:
+            md_bg_color: app.background_light
+
+            ScrollView:
+                bar_width: 0
+
+                MDBoxLayout:
+                    adaptive_height: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        id: startedex
+
+### Main menu bottom icons ###
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+
+            MDRectangleFlatIconButton:
+                text: 'Back'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                size_hint_x: 0.5
+                pos_hint: {'right': 1}
+                on_release: app.switch_screen('home_page')
+
+
+            MDRectangleFlatIconButton:
+                text: 'End workout'
+                text_color: app.text_white
+                icon_color: app.text_white
+                md_bg_color: app.background_dark
+                line_color: (0, 0, 0, 0)
+                size_hint_x: 0.5
+                pos_hint: {'left': 0}
+
+### Exercise cards ###
+<StartedCard>
+
+    orientation: 'vertical'
+    size_hint_y: None
+    spacing: 10
+    md_bg_color: app.background_light
+
+    MDCard:
+        orientation: "vertical"
+        padding: "4dp"
+        size_hint: None, None
+        size: "280dp", "80dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        OneLineListItem:
+            text: f"[b][size=14]{root.exercise_name}[/size][/b]"
+
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: 'horizontal'
+            spacing: 10
+
+            #Card buttons
+            MDRaisedButton:
+                id: stop_button
+                text: "Stop"
+                md_bg_color: app.button_red
+                size_hint_x: 0.5
+                pos_hint: {'left': 0}
+                line_color: (0, 0, 0, 0)
+
+            MDRaisedButton:
+                id: start_button
+                text: "Start"
+                md_bg_color: app.button_green
+                size_hint_x: 0.5
+                pos_hint: {'right': 0}
+                line_color: (0, 0, 0, 0)
+
+
+
